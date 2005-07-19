@@ -1,0 +1,188 @@
+Index: e-smith-openssh/createlinks
+diff -u e-smith-openssh/createlinks:1.1.1.1 e-smith-openssh/createlinks:1.2
+--- e-smith-openssh/createlinks:1.1.1.1	Thu Feb 14 15:51:15 2002
++++ e-smith-openssh/createlinks	Thu Aug 21 17:50:48 2003
+@@ -21,14 +21,6 @@
+ }
+ 
+ foreach $event (
+-		"post-install", 
+-		"post-upgrade", 
+-		)
+-{
+-    event_link("sshd-conf-startup", $event, "70");
+-}
+-
+-foreach $event (
+ 		"console-save",
+ 		"remoteaccess-update",
+ 		)
+Index: e-smith-openssh/e-smith-openssh.spec
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/PasswordAuthentication:1.1
+--- /dev/null	Thu Aug 21 17:53:16 2003
++++ e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/PasswordAuthentication	Thu Aug 21 17:50:48 2003
+@@ -0,0 +1 @@
++yes
+Index: e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/PermitRootLogin
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/PermitRootLogin:1.1
+--- /dev/null	Thu Aug 21 17:53:16 2003
++++ e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/PermitRootLogin	Thu Aug 21 17:50:48 2003
+@@ -0,0 +1 @@
++no
+Index: e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/access
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/access:1.1
+--- /dev/null	Thu Aug 21 17:53:16 2003
++++ e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/access	Thu Aug 21 17:50:48 2003
+@@ -0,0 +1 @@
++private
+Index: e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/status
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/status:1.1
+--- /dev/null	Thu Aug 21 17:53:16 2003
++++ e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/status	Thu Aug 21 17:50:48 2003
+@@ -0,0 +1 @@
++disabled
+Index: e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/type
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/type:1.1
+--- /dev/null	Thu Aug 21 17:53:16 2003
++++ e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/type	Thu Aug 21 17:50:48 2003
+@@ -0,0 +1 @@
++service
+Index: e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf-startup
+diff -u e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf-startup:1.3 e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf-startup:removed
+--- e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf-startup:1.3	Tue Aug 20 12:34:59 2002
++++ e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf-startup	Wed Dec 31 19:00:00 1969
+@@ -1,134 +0,0 @@
+-#!/usr/bin/perl -w
+-
+-#----------------------------------------------------------------------
+-# copyright (C) 1999, 2000 e-smith, inc.
+-#		
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2 of the License, or
+-# (at your option) any later version.
+-#		
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+-# GNU General Public License for more details.
+-#		
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+-# 
+-# Technical support for this program is available from e-smith, inc.
+-# For details, please visit our web site at www.e-smith.com or
+-# call us on 1 888 ESMITH 1 (US/Canada toll free) or +1 613 564 8000
+-#----------------------------------------------------------------------
+-
+-use strict;
+-use Errno;
+-use esmith::util;
+-
+-
+-=head1 NAME
+-
+-sshd-conf-startup - enable or disable the ssh server
+-
+-=head1 SYNOPSIS
+-
+-  sshd-conf-startup
+-
+-=head1 DESCRIPTION
+-
+-Enables/disables the ssh server depending on the configuration of
+-sshd->status (defaults to disabled).
+-
+-Also sets up some standard sshd config values to safe defaults if not
+-already set.
+-
+-=begin testing
+-
+-use esmith::ConfigDB;
+-
+-$Destruct_Ok = 
+-  eval { esmith::ConfigDB->open->get('testing')->prop('destruction') } || 0;
+-
+-my $Scratch = 'scratch.conf';
+-unlink $Scratch;
+-$ENV{ESMITH_CONFIG_DB} = $Scratch;
+-esmith::ConfigDB->create($Scratch);  # so the action has something
+-END { unlink $Scratch }
+-
+-system $^X, $Original_File;
+-is( $@, '', 'ran myself ok' );
+-
+-my $db = esmith::ConfigDB->open;
+-
+-ok( my $sshd = $db->get('sshd'), 'sshd config exists' );
+-
+-is( $sshd->prop('status'), 'disabled', 'sshd is disabled' );
+-is( $sshd->prop('PasswordAuthentication'), 'yes', 
+-                              "    PasswordAuth is set to the default" );
+-is( $sshd->prop('PermitRootLogin'),        'no',
+-                              "    PermitRootLogin is set to the default" );
+-is( $sshd->prop('access'),                 'private',
+-                              "    access is set to the default" );
+-
+-
+-
+-SKIP: {
+-    skip "sshd reconfiguration would be destructive", 6
+-      unless $Destruct_Ok;
+-
+-    # Use the real configuration.
+-    local $ENV{ESMITH_CONFIG_DB};
+-
+-    skip "You have to be able to read the config DB to test this", 6
+-       unless $db = esmith::ConfigDB->open;
+-
+-    # Call ourself.
+-    system $^X, $Original_File;
+-    is( $@, '', 'ran myself ok' );
+-
+-    ok( my $sshd = $db->get('sshd'), 'sshd config exists' );
+-
+-    foreach my $prop (qw(status access
+-                         PasswordAuthentication PermitRootLogin))
+-    {
+-        ok( $sshd->prop($prop),       "    $prop is defined" );
+-    }
+-}
+-
+-=end testing
+-
+-
+-=cut
+-
+-use esmith::ConfigDB;
+-my $conf = esmith::ConfigDB->open;
+-
+-my $sshd = $conf->get("sshd") || 
+-           $conf->new_record("sshd", { type => 'service' }) ||
+-               warn("Could not add sshd to configuration db\n");
+-
+-my $serviceStatus = $sshd->prop('status');
+-unless( $serviceStatus ) {
+-    $serviceStatus = 'disabled';
+-    $sshd->set_prop('status', 'disabled');
+-}
+-
+-my %default_props = (
+-		  PasswordAuthentication => "yes",
+-		  PermitRootLogin        => "no",
+-		  access                 => "private"
+-		);
+-
+-my %props = $sshd->props;
+-$sshd->reset_props(%default_props, %props);
+-	
+-my $action = ($serviceStatus eq 'enabled') ? 'enable' : 'disable';
+-
+-esmith::util::serviceControl(
+-                                NAME=>'sshd',
+-                                ACTION=>$action,
+-                            ) || warn ("Couldn't $action service sshd");
+-
+-
+-exit (0);

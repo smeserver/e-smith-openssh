@@ -1,0 +1,223 @@
+Index: e-smith-openssh/createlinks
+diff -u e-smith-openssh/createlinks:1.5 e-smith-openssh/createlinks:1.6
+--- e-smith-openssh/createlinks:1.5	Fri Dec  5 13:50:05 2003
++++ e-smith-openssh/createlinks	Mon Mar 14 11:47:07 2005
+@@ -3,6 +3,18 @@
+ use strict;
+ use esmith::Build::CreateLinks qw(:all);
+ 
++foreach (qw(
++    /etc/ssh/sshd_config
++    /root/.ssh/config
++	))
++{
++    templates2events("$_", qw(
++	console-save
++	bootstrap-console-save
++	remoteaccess-update
++	));
++}
++
+ foreach my $event (
+     "console-save",
+     "bootstrap-console-save",
+@@ -15,7 +27,7 @@
+     "console-save",
+     "remoteaccess-update")
+ {
+-    event_link("sshd-reload", $event, "80");
++    safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/sshd");
+ }
+ 
+ # Set up links to daemontools. Note: /etc/init.d/sshd is now obsolete.
+Index: e-smith-openssh/e-smith-openssh.spec
+diff -u e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf:1.5 e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf:1.6
+--- e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf:1.5	Fri Dec  5 16:40:43 2003
++++ e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf	Mon Mar 14 11:47:07 2005
+@@ -40,10 +40,7 @@
+ 
+ =head1 DESCRIPTION
+ 
+-Rebuilds the /etc/ssh/sshd_config and /root/.ssh/config files from
+-templates.
+-
+-Also generates the sshd host key with no passphrase.  If one already
++Generates the sshd host key with no passphrase.  If one already
+ exists it simply makes sure the comment in the ssh_host_key is
+ correct.
+ 
+@@ -51,9 +48,7 @@
+ 
+ The following files are affected.
+ 
+-  /etc/ssh/sshd_config
+   /etc/ssh/ssh_host_key
+-  /root/.ssh/config
+ 
+ =begin testing
+ 
+@@ -77,9 +72,9 @@
+ 
+         sleep 1;
+ 
+-        foreach my $file (qw(/etc/ssh/sshd_config
++        foreach my $file (qw(
+                              /etc/ssh/ssh_host_key
+-                             /root/.ssh/config) )
++                             ) )
+         {
+             cmp_ok( -M $file, '<', 0, "$file rewritten" );
+             cmp_ok( -s $file, '>', 0, "$file is not empty" );
+@@ -94,11 +89,6 @@
+ my %conf;
+ tie %conf, 'esmith::config';
+ 
+-esmith::templates::processTemplate ({
+-    CONFREF => \%conf,
+-    TEMPLATE_PATH => "/etc/ssh/sshd_config",
+-    PERMS => 0600 });
+-
+ # Recomment the key in case the SystemName or DomainName changed.
+ my @change = (-f "/etc/ssh/ssh_host_key") ? ("-c", "-P", "")
+                                           : ("-q", "-N", "");
+@@ -107,8 +97,6 @@
+     "/usr/bin/ssh-keygen", @change, "-t", "rsa1",
+     "-f", "/etc/ssh/ssh_host_key",
+     "-C", "root@" . $conf{'SystemName'} . "." . $conf{'DomainName'});
+-
+-esmith::templates::processTemplate (\%conf, "/root/.ssh/config");
+ 
+ exit (0);
+ 
+Index: e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload
+diff -u e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload:1.6 e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload:removed
+--- e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload:1.6	Fri Dec  5 16:40:43 2003
++++ e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload	Wed Dec 31 19:00:00 1969
+@@ -1,121 +0,0 @@
+-#!/usr/bin/perl -w
+-
+-#----------------------------------------------------------------------
+-# copyright (C) 1999-2003 Mitel Networks Corporation
+-#
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2 of the License, or
+-# (at your option) any later version.
+-#
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-#
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+-#
+-# Technical support for this program is available from Mitel Networks
+-# Please visit our web site www.mitel.com/sme/ for details.
+-#----------------------------------------------------------------------
+-package esmith;
+-
+-use strict;
+-use Errno;
+-
+-use esmith::ConfigDB;
+-use esmith::util::system qw(killall);
+-
+-
+-=head1 NAME
+-
+-sshd-reload - starts or stops the ssh server based on your config
+-
+-=head1 SYNOPSIS
+-
+-  sshd-reload
+-
+-=head1 DESCRIPTION
+-
+-By looking at the value of sshd->status, sshd-reload will start (or
+-restart if its already running) your ssh server if its enabled.
+-
+-If its disabled it will stop sshd with extreme prejudice.  All active
+-connections will be told to immediately disconnect.
+-
+-If there's no status at all its a no-op.
+-
+-=head1 FILES
+-
+-  /var/lock/subsys/sshd
+-
+-=begin testing
+-
+-system( $^X, $Original_File );
+-is( $?, 0,  'ran myself ok' );
+-sleep 1;
+-my $last_touch = -M "/var/lock/subsys/sshd";
+-cmp_ok( $last_touch, '<', 0, 'sshd lockfile touched' );
+-
+-
+-# Test stopping the sshd using fake tests.
+-$ENV{ESMITH_CONFIG_DB} = 'e-smith-openssh/stop.conf';
+-
+-# this will run 9 tests.
+-my $tb = Test::More->builder;
+-$tb->current_test($tb->current_test + 9);
+-
+-system( $^X, '-Ie-smith-openssh/lib', '-Mreload_overrides', $Original_File );
+-is( $?, 0,  'ran myself ok' );
+-
+-
+-# Test when there's no status.
+-$ENV{ESMITH_CONFIG_DB} = 'e-smith-openssh/nostatus.conf';
+-system( $^X, $Original_File );
+-is( $?, 0,  'ran myself ok' );
+-cmp_ok( -M "/var/lock/subsys/sshd", '==', $last_touch,
+-                                 'sshd lockfile untouched' );
+-
+-=end testing
+-
+-=cut
+-
+-my $db = esmith::ConfigDB->open;
+-my $sshd = $db->get('sshd')             || exit 0;
+-my $status = $sshd->prop('status')      || exit 0;
+-my $svstat = '/usr/local/bin/svstat';
+-my $init = '/etc/init.d/supervise/sshd';
+-
+-die "Cannot find svstat!\n" if not -e $svstat;
+-die "Cannot find $init\n" if not -e $init;
+-
+-my $action = ($status eq "enabled") ? "start" : "stop";
+-
+-if ($action eq "start")
+-{
+-    chomp( my $status = `$svstat /service/sshd` );
+-    if ($status =~ m#^/service/sshd: (\w+) #)
+-    {
+-        if ($1 eq 'up')
+-        {
+-            # Reload ssh with a HUP signal.
+-            $action = 'sighup';
+-        }
+-    }
+-    else
+-    {
+-        die "Failed to parse svstat output!\n";
+-    }
+-}
+-
+-system($init, $action) == 0
+-    or die "Failed to $action sshd\n";
+-
+-if ( $action eq 'stop' )
+-{
+-    killall('HUP', 'sshd') or warn("Could not stop sshd sessions\n");
+-}
+-
+-exit (0);
+Index: e-smith-openssh/root/etc/e-smith/templates.metadata/etc/ssh/sshd_config
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/templates.metadata/etc/ssh/sshd_config:1.1
+--- /dev/null	Mon Mar 14 11:47:35 2005
++++ e-smith-openssh/root/etc/e-smith/templates.metadata/etc/ssh/sshd_config	Mon Mar 14 11:47:07 2005
+@@ -0,0 +1 @@
++PERMS=0600

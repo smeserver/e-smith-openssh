@@ -1,0 +1,13 @@
+Index: e-smith-openssh/createlinks
+diff -u e-smith-openssh/createlinks:1.6 e-smith-openssh/createlinks:1.7
+--- e-smith-openssh/createlinks:1.6	Mon Mar 14 11:47:07 2005
++++ e-smith-openssh/createlinks	Thu Jun 16 14:48:21 2005
+@@ -33,6 +33,6 @@
+ # Set up links to daemontools. Note: /etc/init.d/sshd is now obsolete.
+ safe_symlink("../daemontools", "root/etc/rc.d/init.d/supervise/sshd");
+                                                                                     
+-safe_symlink("../init.d/supervise/sshd", "root/etc/rc.d/rc7.d/S85sshd");
++service_link_enhanced("sshd", "S85", "7");
+ safe_symlink("../init.d/supervise/sshd", "root/etc/rc.d/rc6.d/K25sshd");
+ safe_symlink("../init.d/supervise/sshd", "root/etc/rc.d/rc0.d/K25sshd");
+Index: e-smith-openssh/e-smith-openssh.spec

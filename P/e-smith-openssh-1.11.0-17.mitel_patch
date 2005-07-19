@@ -1,0 +1,19 @@
+Index: e-smith-openssh/e-smith-openssh.spec
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/MaxAuthTries:1.1
+--- /dev/null	Tue Jul  5 14:19:12 2005
++++ e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/MaxAuthTries	Tue Jul  5 14:18:41 2005
+@@ -0,0 +1 @@
++2
+Index: e-smith-openssh/root/etc/e-smith/templates/etc/ssh/sshd_config/40MaxAuthTries
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/templates/etc/ssh/sshd_config/40MaxAuthTries:1.1
+--- /dev/null	Tue Jul  5 14:19:12 2005
++++ e-smith-openssh/root/etc/e-smith/templates/etc/ssh/sshd_config/40MaxAuthTries	Tue Jul  5 14:18:41 2005
+@@ -0,0 +1,8 @@
++{
++# MaxAuthTries specifies the maximum number of authentication
++# attempts permitted per connection. Once the number of failures
++# reaches half this value, additional failures are logged. The
++# sshd default is 6 - we consider that too many.
++    my $MaxAuthTries = $sshd{MaxAuthTries} || "2";
++    $OUT = "MaxAuthTries $MaxAuthTries";
++}

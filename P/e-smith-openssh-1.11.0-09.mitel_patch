@@ -1,0 +1,161 @@
+Index: e-smith-openssh/e-smith-openssh.spec
+diff -u e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf:1.4 e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf:1.5
+--- e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf:1.4	Mon Apr 21 11:24:28 2003
++++ e-smith-openssh/root/etc/e-smith/events/actions/sshd-conf	Fri Dec  5 16:40:43 2003
+@@ -2,21 +2,21 @@
+ 
+ #----------------------------------------------------------------------
+ # copyright (C) 1999 e-smith, inc.
+-#		
++#
+ # This program is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 2 of the License, or
+ # (at your option) any later version.
+-#		
++#
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+-#		
++#
+ # You should have received a copy of the GNU General Public License
+ # along with this program; if not, write to the Free Software
+ # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+-# 
++#
+ # Technical support for this program is available from e-smith, inc.
+ # For details, please visit our web site at www.e-smith.com or
+ # call us on 1 888 ESMITH 1 (US/Canada toll free) or +1 613 564 8000
+@@ -68,7 +68,7 @@
+     $Destruct_Ok = $db->get('testing')->prop('destruction');
+ 
+     SKIP: {
+-        skip "sshd reconfiguration would be destructive", 7 
++        skip "sshd reconfiguration would be destructive", 7
+           unless $Destruct_Ok;
+ 
+         # Call ourself.
+@@ -95,18 +95,18 @@
+ tie %conf, 'esmith::config';
+ 
+ esmith::templates::processTemplate ({
+-    CONFREF => \%conf, 
++    CONFREF => \%conf,
+     TEMPLATE_PATH => "/etc/ssh/sshd_config",
+     PERMS => 0600 });
+ 
+ # Recomment the key in case the SystemName or DomainName changed.
+-my @change = (-f "/etc/ssh/ssh_host_key") ? ("-c", "-P", "") 
++my @change = (-f "/etc/ssh/ssh_host_key") ? ("-c", "-P", "")
+                                           : ("-q", "-N", "");
+ 
+ esmith::util::backgroundCommand (0,
+-    "/usr/bin/ssh-keygen", @change, "-t", "rsa1", 
+-	"-f", "/etc/ssh/ssh_host_key",
+-	"-C", "root@" . $conf{'SystemName'} . "." . $conf{'DomainName'});
++    "/usr/bin/ssh-keygen", @change, "-t", "rsa1",
++    "-f", "/etc/ssh/ssh_host_key",
++    "-C", "root@" . $conf{'SystemName'} . "." . $conf{'DomainName'});
+ 
+ esmith::templates::processTemplate (\%conf, "/root/.ssh/config");
+ 
+Index: e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload
+diff -u e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload:1.5 e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload:1.6
+--- e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload:1.5	Tue Apr  1 22:14:51 2003
++++ e-smith-openssh/root/etc/e-smith/events/actions/sshd-reload	Fri Dec  5 16:40:43 2003
+@@ -2,22 +2,22 @@
+ 
+ #----------------------------------------------------------------------
+ # copyright (C) 1999-2003 Mitel Networks Corporation
+-# 
++#
+ # This program is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 2 of the License, or
+ # (at your option) any later version.
+-# 		
++#
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+-# 		
++#
+ # You should have received a copy of the GNU General Public License
+ # along with this program; if not, write to the Free Software
+ # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+-# 
+-# Technical support for this program is available from Mitel Networks 
++#
++# Technical support for this program is available from Mitel Networks
+ # Please visit our web site www.mitel.com/sme/ for details.
+ #----------------------------------------------------------------------
+ package esmith;
+@@ -26,7 +26,6 @@
+ use Errno;
+ 
+ use esmith::ConfigDB;
+-use esmith::util;
+ use esmith::util::system qw(killall);
+ 
+ 
+@@ -76,7 +75,7 @@
+ $ENV{ESMITH_CONFIG_DB} = 'e-smith-openssh/nostatus.conf';
+ system( $^X, $Original_File );
+ is( $?, 0,  'ran myself ok' );
+-cmp_ok( -M "/var/lock/subsys/sshd", '==', $last_touch, 
++cmp_ok( -M "/var/lock/subsys/sshd", '==', $last_touch,
+                                  'sshd lockfile untouched' );
+ 
+ =end testing
+@@ -86,30 +85,37 @@
+ my $db = esmith::ConfigDB->open;
+ my $sshd = $db->get('sshd')             || exit 0;
+ my $status = $sshd->prop('status')      || exit 0;
++my $svstat = '/usr/local/bin/svstat';
++my $init = '/etc/init.d/supervise/sshd';
+ 
++die "Cannot find svstat!\n" if not -e $svstat;
++die "Cannot find $init\n" if not -e $init;
+ 
+ my $action = ($status eq "enabled") ? "start" : "stop";
+ 
+ if ($action eq "start")
+ {
+-    if ( -f "/var/lock/subsys/sshd" )
++    chomp( my $status = `$svstat /service/sshd` );
++    if ($status =~ m#^/service/sshd: (\w+) #)
+     {
+-	$action = 'reload';
++        if ($1 eq 'up')
++        {
++            # Reload ssh with a HUP signal.
++            $action = 'sighup';
++        }
++    }
++    else
++    {
++        die "Failed to parse svstat output!\n";
+     }
+ }
+ 
+-esmith::util::serviceControl
+-(
+-    NAME   => 'sshd',
+-    ACTION => $action
+-) ||
+-  die "Couldn't $action sshd";
+-
++system($init, $action) == 0
++    or die "Failed to $action sshd\n";
+ 
+ if ( $action eq 'stop' )
+ {
+     killall('HUP', 'sshd') or warn("Could not stop sshd sessions\n");
+ }
+-
+ 
+ exit (0);
