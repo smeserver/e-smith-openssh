@@ -1,0 +1,17 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/defaults/sshd/TCPPort mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/defaults/sshd/TCPPort
+--- e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/defaults/sshd/TCPPort	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/defaults/sshd/TCPPort	2005-07-20 02:07:00.315568784 -0600
+@@ -0,0 +1 @@
++22
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.11.0/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH
+--- e-smith-openssh-1.11.0/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH	2002-08-20 10:35:05.000000000 -0600
++++ mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH	1969-12-31 17:00:00.000000000 -0700
+@@ -1,8 +0,0 @@
+-{
+-    my $status = $sshd{status} || "disabled";
+-    my $access = $sshd{access} || "private";
+-
+-    $OUT = allow_tcp_in(22,
+-	    ($status eq 'enabled') && ($access eq 'public'));
+-}
+-
