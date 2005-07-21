@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.11.0
-%define release 18sme01
+%define release 18sme02
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -23,6 +23,7 @@ Patch11: e-smith-openssh-1.11.0-16.mitel_patch
 Patch12: e-smith-openssh-1.11.0-17.mitel_patch
 Patch13: e-smith-openssh-1.11.0-18.mitel_patch
 Patch100: e-smith-openssh-1.11.0-TCPPort.patch
+Patch101: e-smith-openssh-1.11.0-forceproto2.patch
 Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
@@ -35,6 +36,10 @@ Requires: perl(Test::Simple) >= 0.42
 AutoReqProv: no
 
 %changelog
+* Wed Jul 20 2005 Shad L. Lords <slords@mail.com>
+- [1.11.0-18sme02]
+- Force ssh to use protocol 2
+
 * Wed Jul 20 2005 Gordon Rowell <gordonr@gormand.com.au>
 - [1.11.0-18sme01]
 - Add TCPPort property and delete specific masq fragment [SF: 1241409]
@@ -519,6 +524,7 @@ e-smith server enhancement to configure and enable openssh
 %patch12 -p1
 %patch13 -p1
 %patch100 -p1
+%patch101 -p1
 
 %build
 for i in console-save \

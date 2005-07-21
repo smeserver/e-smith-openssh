@@ -1,0 +1,10 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/defaults/sshd/Protocol mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/defaults/sshd/Protocol
+--- e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/defaults/sshd/Protocol	2005-07-20 18:30:00.306667840 -0600
++++ mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/defaults/sshd/Protocol	1969-12-31 17:00:00.000000000 -0700
+@@ -1 +0,0 @@
+-2
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/force/sshd/Protocol mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/force/sshd/Protocol
+--- e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/force/sshd/Protocol	1969-12-31 17:00:00.000000000 -0700
++++ mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/db/configuration/force/sshd/Protocol	2005-07-20 18:26:09.163830696 -0600
+@@ -0,0 +1 @@
++2
