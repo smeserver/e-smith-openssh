@@ -1,0 +1,19 @@
+Index: e-smith-openssh/e-smith-openssh.spec
+diff -u /dev/null e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/TCPPort:1.1
+--- /dev/null	Wed Jul 20 08:56:52 2005
++++ e-smith-openssh/root/etc/e-smith/db/configuration/defaults/sshd/TCPPort	Wed Jul 20 08:56:09 2005
+@@ -0,0 +1 @@
++22
+Index: e-smith-openssh/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH
+diff -u e-smith-openssh/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH:1.4 e-smith-openssh/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH:removed
+--- e-smith-openssh/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH:1.4	Tue Aug 20 12:35:05 2002
++++ e-smith-openssh/root/etc/e-smith/templates/etc/rc.d/init.d/masq/45AllowSSH	Wed Dec 31 19:00:00 1969
+@@ -1,8 +0,0 @@
+-{
+-    my $status = $sshd{status} || "disabled";
+-    my $access = $sshd{access} || "private";
+-
+-    $OUT = allow_tcp_in(22,
+-	    ($status eq 'enabled') && ($access eq 'public'));
+-}
+-
