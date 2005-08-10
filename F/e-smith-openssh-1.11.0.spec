@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.11.0
-%define release 19
+%define release 20
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -28,13 +28,18 @@ BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
 BuildArchitectures: noarch
 Requires: e-smith, openssl, 
-Requires: openssh >= 3.5, openssh-clients, openssh-server
+Requires: openssh >= 3.5
+Requires: openssh-clients
+Requires: openssh-server
 Requires: e-smith-lib >= 1.15.1-19
-Requires: e-smith-test >= 0.1.6-01
-Requires: perl(Test::Simple) >= 0.42
+Requires: runit
 AutoReqProv: no
 
 %changelog
+* Wed Aug 10 2005 Charlie Brady <charlieb@e-smith.com>
+- [1.11.0-20]
+- Delete test related requires (not really required) and add runit.
+
 * Wed Jul 20 2005 Charlie Brady <charlieb@e-smith.com>
 - [1.11.0-19]
 - Set $sshd{TCPPort} and remove obsolete masq template fragment. [SF: 1241409]
