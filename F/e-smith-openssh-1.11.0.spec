@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.11.0
-%define release 20
+%define release 21
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -36,6 +36,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Wed Nov 30 2005 Gordon Rowell <gordonr@gormand.com.au> 1.11.0-21
+- Bump release number only
+
 * Wed Aug 10 2005 Charlie Brady <charlieb@e-smith.com>
 - [1.11.0-20]
 - Delete test related requires (not really required) and add runit.
