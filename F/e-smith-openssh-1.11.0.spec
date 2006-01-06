@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.11.0
-%define release 21
+%define release 22
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -23,6 +23,7 @@ Patch11: e-smith-openssh-1.11.0-16.mitel_patch
 Patch12: e-smith-openssh-1.11.0-17.mitel_patch
 Patch13: e-smith-openssh-1.11.0-18.mitel_patch
 Patch14: e-smith-openssh-1.11.0-19.mitel_patch
+Patch15: e-smith-openssh-1.11.0-DefaultPasswordAuthOff.patch
 Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
@@ -36,6 +37,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Fri Jan 6 2006 Gordon Rowell <gordonr@gormand.com.au> 1.11.0-22
+- Default sshd{PasswordAuthentication} to "no" [SME: 377]
+
 * Wed Nov 30 2005 Gordon Rowell <gordonr@gormand.com.au> 1.11.0-21
 - Bump release number only
 
@@ -527,6 +531,7 @@ e-smith server enhancement to configure and enable openssh
 %patch12 -p1
 %patch13 -p1
 %patch14 -p1
+%patch15 -p1
 
 %build
 for i in console-save \
