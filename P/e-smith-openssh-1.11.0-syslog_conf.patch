@@ -1,0 +1,5 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.11.0/root/etc/e-smith/templates/etc/sysconfig/syslog/50sshd mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/templates/etc/sysconfig/syslog/50sshd
+--- e-smith-openssh-1.11.0/root/etc/e-smith/templates/etc/sysconfig/syslog/50sshd	1969-12-31 19:00:00.000000000 -0500
++++ mezzanine_patched_e-smith-openssh-1.11.0/root/etc/e-smith/templates/etc/sysconfig/syslog/50sshd	2006-03-01 15:25:09.000000000 -0500
+@@ -0,0 +1 @@
++SYSLOGD_OPTIONS="$SYSLOGD_OPTIONS -a /var/empty/sshd/dev/log"

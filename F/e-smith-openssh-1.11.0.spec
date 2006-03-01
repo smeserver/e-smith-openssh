@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.11.0
-%define release 24
+%define release 25
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -25,7 +25,8 @@ Patch13: e-smith-openssh-1.11.0-18.mitel_patch
 Patch14: e-smith-openssh-1.11.0-19.mitel_patch
 Patch15: e-smith-openssh-1.11.0-DefaultPasswordAuthOff.patch
 Patch16: e-smith-openssh-1.11.0-TemplateRssh.conf.patch
-patch17: e-smith-openssh-1.11.0-AllowRSYNC.patch
+Patch17: e-smith-openssh-1.11.0-AllowRSYNC.patch
+Patch18: e-smith-openssh-1.11.0-syslog_conf.patch
 Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
@@ -39,6 +40,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Wed Mar 01 2006 Charlie Brady <charlie_brady@mitel.com> 1.11.0-25
+- Add syslog socket inside privsep chroot jail [SME: 916]
+
 * Tue Jan 24 2006 Gordon Rowell <gordonr@gormand.com.au> 1.11.0-24
 - Default sshd{AllowRSYNC} == yes [SME: 42]
 
@@ -544,6 +548,8 @@ e-smith server enhancement to configure and enable openssh
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
+mkdir -p root/var/empty/sshd/dev
+%patch18 -p1
 
 %build
 for i in console-save \
