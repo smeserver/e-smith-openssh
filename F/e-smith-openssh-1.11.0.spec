@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.11.0
-%define release 25
+%define release 26
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -27,6 +27,7 @@ Patch15: e-smith-openssh-1.11.0-DefaultPasswordAuthOff.patch
 Patch16: e-smith-openssh-1.11.0-TemplateRssh.conf.patch
 Patch17: e-smith-openssh-1.11.0-AllowRSYNC.patch
 Patch18: e-smith-openssh-1.11.0-syslog_conf.patch
+Patch19: e-smith-openssh-1.11.0-SFTPServerPath.patch
 Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
@@ -40,6 +41,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Thu Mar 02 2006 Gordon Rowell <gordonr@gormand.com.au> 1.11.0-26
+- Adjust sftp-server path in sshd_config to match rssh [SME: 924]
+
 * Wed Mar 01 2006 Charlie Brady <charlie_brady@mitel.com> 1.11.0-25
 - Add syslog socket inside privsep chroot jail [SME: 916]
 
@@ -550,6 +554,7 @@ e-smith server enhancement to configure and enable openssh
 %patch17 -p1
 mkdir -p root/var/empty/sshd/dev
 %patch18 -p1
+%patch19 -p1
 
 %build
 for i in console-save \
