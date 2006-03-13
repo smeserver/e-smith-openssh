@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.11.0
-%define release 27
+%define release 29
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -29,6 +29,8 @@ Patch17: e-smith-openssh-1.11.0-AllowRSYNC.patch
 Patch18: e-smith-openssh-1.11.0-syslog_conf.patch
 Patch19: e-smith-openssh-1.11.0-SFTPServerPath.patch
 Patch20: e-smith-openssh-1.11.0-UserAllowRSSH.patch
+Patch21: e-smith-openssh-1.11.0-UserVPNisAlsoRSSH.patch
+Patch22: e-smith-openssh-1.11.0-ExpandRSSH.patch
 Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
@@ -42,6 +44,15 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Mon Mar 13 2006 Gordon Rowell <gordonr@gormand.com.au> 1.11.0-29
+- Expand /etc/rssh.conf in user-{create,delete,lock,modify} [SME: 877]
+
+* Mon Mar 13 2006 Gordon Rowell <gordonr@gormand.com.au> 1.11.0-28
+- A user is allowed access to rssh protocols if:
+  - They have PasswordSet==yes 
+  - They have AllowRSSH==yes or
+    VPNClientAccess==yes but not AllowRSSH==no [SME: 877]
+
 * Mon Mar 13 2006 Gordon Rowell <gordonr@gormand.com.au> 1.11.0-27
 - Remove defaults for sshd{Allow*} and the templates for rssh.conf [SME: 877]
 - Allow a user all of the rssh protocols if AllowSSH is yes [SME: 877]
@@ -561,6 +572,8 @@ mkdir -p root/var/empty/sshd/dev
 %patch18 -p1
 %patch19 -p1
 %patch20 -p1
+%patch21 -p1
+%patch22 -p1
 
 %build
 for i in console-save \
