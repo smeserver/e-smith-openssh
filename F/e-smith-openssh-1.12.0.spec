@@ -1,8 +1,8 @@
 Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
-%define version 1.11.0
-%define release 29
+%define version 1.12.0
+%define release 01
 Version: %{version}
 Release: %{release}
 License: GPL
