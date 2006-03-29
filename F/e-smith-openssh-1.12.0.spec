@@ -2,12 +2,13 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 01
+%define release 02
 Version: %{version}
 Release: %{release}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
+Patch0: e-smith-openssh-1.12.0-PrintMotdNo.patch
 Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
@@ -21,6 +22,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Wed Mar 29 2006 Gordon Rowell <gordonr@gormand.com.au> 1.12.0-02
+- Don't display /etc/motd contents from ssh [SME: 718]
+
 * Tue Mar 14 2006 Charlie Brady <charlie_brady@mitel.com> 1.12.0-01
 - Roll stable stream version. [SME: 1016]
 
@@ -530,6 +534,7 @@ e-smith server enhancement to configure and enable openssh
 
 %prep
 %setup
+%patch0 -p1
 
 %build
 for i in console-save \
