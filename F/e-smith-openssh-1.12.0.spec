@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 03
+%define release 04
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -10,6 +10,7 @@ Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 Patch0: e-smith-openssh-1.12.0-PrintMotdNo.patch
 Patch1: e-smith-openssh-1.12.0-RSSHNewLine.patch
+Patch2: e-smith-openssh-1.12.0-UsePAM.patch
 Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
@@ -23,6 +24,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Tue Jul 18 2006 Charlie Brady <charlie_brady@mitel.com> 1.12.0-04
+- Allow "UsePAM" setting to be controlled from db. [SME: 1744]
+
 * Wed Apr 5 2006 Gordon Rowell <gordonr@gormand.com.au> 1.12.0-03
 - Add newline after user entries in rssh.conf [SME: 877]
 
@@ -540,6 +544,7 @@ e-smith server enhancement to configure and enable openssh
 %setup
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 for i in console-save \
