@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 04
+%define release 05
 Version: %{version}
 Release: %{release}
 License: GPL
@@ -11,6 +11,7 @@ Source: %{name}-%{version}.tar.gz
 Patch0: e-smith-openssh-1.12.0-PrintMotdNo.patch
 Patch1: e-smith-openssh-1.12.0-RSSHNewLine.patch
 Patch2: e-smith-openssh-1.12.0-UsePAM.patch
+Patch3: e-smith-openssh-1.12.0-SSHPort.patch
 Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
@@ -24,6 +25,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Tue Jul 25 2006 Gordon Rowell <gordonr@gormand.com.au> 1.12.0-05
+- Use sshd{TCPPort} for listen Port - thanks MasterSleepy [SME: 1774]
+
 * Tue Jul 18 2006 Charlie Brady <charlie_brady@mitel.com> 1.12.0-04
 - Allow "UsePAM" setting to be controlled from db. [SME: 1744]
 
@@ -545,6 +549,7 @@ e-smith server enhancement to configure and enable openssh
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 for i in console-save \
