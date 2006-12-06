@@ -1,6 +1,0 @@
-Index: e-smith-openssh/e-smith-openssh.spec
-diff -u e-smith-openssh/root/etc/e-smith/templates/etc/ssh/sshd_config/40RhostAuthentication:1.1.1.1 e-smith-openssh/root/etc/e-smith/templates/etc/ssh/sshd_config/40RhostAuthentication:removed
---- e-smith-openssh/root/etc/e-smith/templates/etc/ssh/sshd_config/40RhostAuthentication:1.1.1.1	Thu Feb 14 15:51:15 2002
-+++ e-smith-openssh/root/etc/e-smith/templates/etc/ssh/sshd_config/40RhostAuthentication	Wed Dec 31 19:00:00 1969
-@@ -1 +0,0 @@
--RhostsAuthentication no
