@@ -2,9 +2,10 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 05
+%define release 6
 Version: %{version}
-Release: %{release}
+Release: %smerelease %{release}
+Packager: %{_packager}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
@@ -12,7 +13,6 @@ Patch0: e-smith-openssh-1.12.0-PrintMotdNo.patch
 Patch1: e-smith-openssh-1.12.0-RSSHNewLine.patch
 Patch2: e-smith-openssh-1.12.0-UsePAM.patch
 Patch3: e-smith-openssh-1.12.0-SSHPort.patch
-Packager: e-smith developers <bugs@e-smith.com>
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
 BuildArchitectures: noarch
@@ -25,6 +25,10 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Thu Dec 07 2006 Shad L. Lords <slords@mail.com>
+- Update to new release naming.  No functional changes.
+- Make Packager generic
+
 * Tue Jul 25 2006 Gordon Rowell <gordonr@gormand.com.au> 1.12.0-05
 - Use sshd{TCPPort} for listen Port - thanks MasterSleepy [SME: 1774]
 
