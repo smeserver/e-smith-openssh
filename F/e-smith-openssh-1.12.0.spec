@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 6
+%define release 7
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -13,6 +13,7 @@ Patch0: e-smith-openssh-1.12.0-PrintMotdNo.patch
 Patch1: e-smith-openssh-1.12.0-RSSHNewLine.patch
 Patch2: e-smith-openssh-1.12.0-UsePAM.patch
 Patch3: e-smith-openssh-1.12.0-SSHPort.patch
+Patch4: e-smith-openssh-1.12.0-sftpserver.patch
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
 BuildArchitectures: noarch
@@ -25,6 +26,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Tue Mar 06 2007 Shad L. Lords <slords@mail.com> 1.12.0-7
+- Adjust sftp-server path in sshd_config to match openssh-servers [SME: 2470]
+
 * Thu Dec 07 2006 Shad L. Lords <slords@mail.com>
 - Update to new release naming.  No functional changes.
 - Make Packager generic
@@ -554,6 +558,7 @@ e-smith server enhancement to configure and enable openssh
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 for i in console-save \
@@ -567,14 +572,6 @@ done
 perl createlinks
 # build the test suite from embedded tests
 /sbin/e-smith/buildtests e-smith-openssh
-
-# Compatibilty symlinks to allow sftp to work with more clients under
-# protocol version 1
-for dir in usr/libexec usr/local/libexec
-do
-    mkdir -p root/$dir
-    ln -s /usr/libexec/openssh/sftp-server root/$dir/sftp-server
-done
 
 # Manage supervise and multilog.
 mkdir -p root/service
