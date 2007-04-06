@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 7
+%define release 8
 Version: %{version}
 Release: %smerelease %{release}
 Packager: %{_packager}
@@ -26,6 +26,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Fri Apr 06 2007 Shad L. Lords <slords@mail.com> 1.12.0-8
+- Adjust permissions on empty/sshd directory [SME: 2711]
+
 * Tue Mar 06 2007 Shad L. Lords <slords@mail.com> 1.12.0-7
 - Adjust sftp-server path in sshd_config to match openssh-servers [SME: 2470]
 
@@ -595,6 +598,7 @@ rm -f %{name}-%{version}-%{release}-filelist
     --dir '/var/service/sshd/log/supervise' 'attr(0700,root,root)' \
     --file '/var/service/sshd/log/run' 'attr(0755,root,root)' \
     --dir '/var/log/sshd' 'attr(2750,root,nofiles)' \
+    --dir '/var/empty/sshd' 'attr(0111,root,root)' \
     $RPM_BUILD_ROOT \
     > %{name}-%{version}-%{release}-filelist
 
