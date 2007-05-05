@@ -4,8 +4,7 @@ Name: %{name}
 %define version 1.12.0
 %define release 9
 Version: %{version}
-Release: %smerelease %{release}
-Packager: %{_packager}
+Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
@@ -26,6 +25,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Sun Apr 29 2007 Shad L. Lords <slords@mail.com>
+- Clean up spec so package can be built by koji/plague
+
 * Sun Apr 08 2007 Shad L. Lords <slords@mail.com> 1.12.0-9
 - Adjust permissions on empty/sshd directory again [SME: 2711]
 
