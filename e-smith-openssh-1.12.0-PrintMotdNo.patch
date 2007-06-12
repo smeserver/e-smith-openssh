@@ -1,0 +1,6 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/60PrintMotd mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/60PrintMotd
+--- e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/60PrintMotd	2002-02-15 07:51:15.000000000 +1100
++++ mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/60PrintMotd	2006-03-29 16:15:39.453293666 +1000
+@@ -1 +1 @@
+-PrintMotd yes
++PrintMotd no
