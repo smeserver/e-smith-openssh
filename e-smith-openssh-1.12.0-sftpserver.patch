@@ -1,0 +1,11 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/50SubsystemSftp mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/50SubsystemSftp
+--- e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/50SubsystemSftp	2006-03-14 10:15:45.000000000 -0700
++++ mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/50SubsystemSftp	2007-03-06 16:20:14.000000000 -0700
+@@ -6,6 +6,6 @@
+     my $SubsystemSftp = $sshd{"SubsystemSftp"} || "yes";
+ 
+     $OUT = ($SubsystemSftp eq "yes") ? 
+-	"Subsystem      sftp    /usr/libexec/sftp-server" : 
++	"Subsystem      sftp    /usr/libexec/openssh/sftp-server" : 
+ 	"# The sftp Subsystem is disabled in the configuration database";
+ }
