@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 9
+%define release 10
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -13,6 +13,7 @@ Patch1: e-smith-openssh-1.12.0-RSSHNewLine.patch
 Patch2: e-smith-openssh-1.12.0-UsePAM.patch
 Patch3: e-smith-openssh-1.12.0-SSHPort.patch
 Patch4: e-smith-openssh-1.12.0-sftpserver.patch
+Patch5: e-smith-openssh-1.12.0-disabled_false_positive.patch
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
 BuildArchitectures: noarch
@@ -25,6 +26,10 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Tue Oct 23 2007 Charlie Brady <charlie_brady@mitel.com> 1.12.0-10
+- Prevent rkhunter false positive if ssh is disabled but
+  PermitRootLogin is enabled in config. [SME: 166]
+
 * Sun Apr 29 2007 Shad L. Lords <slords@mail.com>
 - Clean up spec so package can be built by koji/plague
 
@@ -567,6 +572,7 @@ e-smith server enhancement to configure and enable openssh
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 for i in console-save \
