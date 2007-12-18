@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 10
+%define release 11
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -14,6 +14,7 @@ Patch2: e-smith-openssh-1.12.0-UsePAM.patch
 Patch3: e-smith-openssh-1.12.0-SSHPort.patch
 Patch4: e-smith-openssh-1.12.0-sftpserver.patch
 Patch5: e-smith-openssh-1.12.0-disabled_false_positive.patch
+Patch6: e-smith-openssh-1.12.0-rootkey.patch
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
 BuildArchitectures: noarch
@@ -26,6 +27,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Mon Dec 17 2007 Shad L. Lords <slords@mail.com> 1.12.0.11
+- Allow root to be key based login only
+
 * Tue Oct 23 2007 Charlie Brady <charlie_brady@mitel.com> 1.12.0-10
 - Prevent rkhunter false positive if ssh is disabled but
   PermitRootLogin is enabled in config. [SME: 166]

@@ -1,0 +1,20 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/40PermitRootLogin mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/40PermitRootLogin
+--- e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/40PermitRootLogin	2007-12-17 17:08:31.000000000 -0700
++++ mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/etc/ssh/sshd_config/40PermitRootLogin	2007-12-17 17:07:04.000000000 -0700
+@@ -1,7 +1,14 @@
+ { 
+     my $PermitRootLogin = $sshd{'PermitRootLogin'} || "no";
+     my $status = $sshd{'status'} || 'disabled';
+-    $OUT .= "# sshd is currently disabled\n# " unless $status eq "enabled";
+     $OUT .= "PermitRootLogin ";
+-    $OUT .= ($PermitRootLogin eq "yes") ? "yes" : "no";
++    if ( $status ne 'enabled' ) {
++	$OUT .= 'no';
++    } elsif ( $PermitRootLogin eq 'yes' ) {
++	$OUT .= 'yes';
++    } elsif ( $PermitRootLogin eq 'key' || $PermitRootLogin eq 'nopass' ) {
++	$OUT .= 'without-password';
++    } else {
++	$OUT .= 'no';
++    }
+ }
