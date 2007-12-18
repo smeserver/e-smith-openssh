@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 11
+%define release 12
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -27,7 +27,10 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
-* Mon Dec 17 2007 Shad L. Lords <slords@mail.com> 1.12.0.11
+* Tue Dec 18 2007 Shad L. Lords <slords@mail.com> 1.12.0-12
+- Actually apply previous patch
+
+* Mon Dec 17 2007 Shad L. Lords <slords@mail.com> 1.12.0-11
 - Allow root to be key based login only
 
 * Tue Oct 23 2007 Charlie Brady <charlie_brady@mitel.com> 1.12.0-10
@@ -577,6 +580,7 @@ e-smith server enhancement to configure and enable openssh
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 for i in console-save \
