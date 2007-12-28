@@ -28,10 +28,10 @@ AutoReqProv: no
 
 %changelog
 * Tue Dec 18 2007 Shad L. Lords <slords@mail.com> 1.12.0-12
-- Actually apply previous patch
+- Actually apply previous patch [SME: 3678]
 
 * Mon Dec 17 2007 Shad L. Lords <slords@mail.com> 1.12.0-11
-- Allow root to be key based login only
+- Allow root to be key based login only [SME: 3678]
 
 * Tue Oct 23 2007 Charlie Brady <charlie_brady@mitel.com> 1.12.0-10
 - Prevent rkhunter false positive if ssh is disabled but
