@@ -1,0 +1,36 @@
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.12.0/createlinks mezzanine_patched_e-smith-openssh-1.12.0/createlinks
+--- e-smith-openssh-1.12.0/createlinks	2006-03-15 04:15:45.000000000 +1100
++++ mezzanine_patched_e-smith-openssh-1.12.0/createlinks	2008-01-09 19:55:56.000000000 +1100
+@@ -5,7 +5,6 @@
+ 
+ foreach (qw(
+     /etc/ssh/sshd_config
+-    /root/.ssh/config
+ 	))
+ {
+     templates2events("$_", qw(
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.12.0/root/etc/e-smith/templates/root/.ssh/config/00HostsList mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/root/.ssh/config/00HostsList
+--- e-smith-openssh-1.12.0/root/etc/e-smith/templates/root/.ssh/config/00HostsList	2002-02-15 07:51:15.000000000 +1100
++++ mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/root/.ssh/config/00HostsList	1970-01-01 10:00:00.000000000 +1000
+@@ -1,4 +0,0 @@
+-{
+-    %e_smith_hosts = ();
+-    $OUT = "";
+-}
+diff -Nur -x '*.orig' -x '*.rej' e-smith-openssh-1.12.0/root/etc/e-smith/templates/root/.ssh/config/20GenHostsConfig mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/root/.ssh/config/20GenHostsConfig
+--- e-smith-openssh-1.12.0/root/etc/e-smith/templates/root/.ssh/config/20GenHostsConfig	2002-02-15 07:51:15.000000000 +1100
++++ mezzanine_patched_e-smith-openssh-1.12.0/root/etc/e-smith/templates/root/.ssh/config/20GenHostsConfig	1970-01-01 10:00:00.000000000 +1000
+@@ -1,13 +0,0 @@
+-{
+-    $OUT = "";
+-    foreach (keys %e_smith_hosts)
+-    {
+-	$OUT .= <<HERE;
+-Host $_
+-    Protocol 1
+-    UserKnownHostsFile ~/.ssh/known_hosts.e-smith
+-    StrictHostKeyChecking yes
+-    BatchMode yes
+-HERE
+-    }
+-}

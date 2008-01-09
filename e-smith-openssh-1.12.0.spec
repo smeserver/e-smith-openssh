@@ -2,7 +2,7 @@ Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 1.12.0
-%define release 12
+%define release 13
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -15,6 +15,7 @@ Patch3: e-smith-openssh-1.12.0-SSHPort.patch
 Patch4: e-smith-openssh-1.12.0-sftpserver.patch
 Patch5: e-smith-openssh-1.12.0-disabled_false_positive.patch
 Patch6: e-smith-openssh-1.12.0-rootkey.patch
+Patch7: e-smith-openssh-1.12.0-remove.sshconfig.patch
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
 BuildArchitectures: noarch
@@ -27,6 +28,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Wed Jan 09 2008 Stephen Noble <support@dungog.net> 1.12.0-13
+- Remove template fragments for /root/.ssh/config [SME: 513]
+
 * Tue Dec 18 2007 Shad L. Lords <slords@mail.com> 1.12.0-12
 - Actually apply previous patch [SME: 3678]
 
@@ -581,6 +585,7 @@ e-smith server enhancement to configure and enable openssh
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 for i in console-save \
