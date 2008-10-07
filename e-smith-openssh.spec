@@ -1,21 +1,15 @@
+# $Id: e-smith-openssh.spec,v 1.2 2008/10/07 18:49:47 slords Exp $
+
 Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
-%define version 1.12.0
-%define release 13
+%define version 2.2.0
+%define release 1
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
-Patch0: e-smith-openssh-1.12.0-PrintMotdNo.patch
-Patch1: e-smith-openssh-1.12.0-RSSHNewLine.patch
-Patch2: e-smith-openssh-1.12.0-UsePAM.patch
-Patch3: e-smith-openssh-1.12.0-SSHPort.patch
-Patch4: e-smith-openssh-1.12.0-sftpserver.patch
-Patch5: e-smith-openssh-1.12.0-disabled_false_positive.patch
-Patch6: e-smith-openssh-1.12.0-rootkey.patch
-Patch7: e-smith-openssh-1.12.0-remove.sshconfig.patch
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
 BuildArchitectures: noarch
@@ -28,6 +22,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Tue Oct 7 2008 Shad L. Lords <slords@mail.com> 2.2.0-1.sme
+- Roll new stream to separate sme7/sme8 trees [SME: 4633]
+
 * Wed Jan 09 2008 Stephen Noble <support@dungog.net> 1.12.0-13
 - Remove template fragments for /root/.ssh/config [SME: 513]
 
@@ -578,14 +575,6 @@ e-smith server enhancement to configure and enable openssh
 
 %prep
 %setup
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
 
 %build
 for i in console-save \
