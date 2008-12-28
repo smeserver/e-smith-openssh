@@ -1,15 +1,16 @@
-# $Id: e-smith-openssh.spec,v 1.2 2008/10/07 18:49:47 slords Exp $
+# $Id: e-smith-openssh.spec,v 1.3 2008/12/28 11:25:00 snetram Exp $
 
 Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 2.2.0
-%define release 1
+%define release 2
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
+Patch0: e-smith-openssh-2.2.0-LoginGraceTime.patch
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: e-smith-devtools
 BuildArchitectures: noarch
@@ -22,6 +23,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Sun Dec 28 2008 Jonathan Martens <smesevrer-contribs@snetram.nl> 2.2.0-2.sme
+- Template sshd login grace time, kept default at 600s [SME: 4903]
+
 * Tue Oct 7 2008 Shad L. Lords <slords@mail.com> 2.2.0-1.sme
 - Roll new stream to separate sme7/sme8 trees [SME: 4633]
 
@@ -575,6 +579,7 @@ e-smith server enhancement to configure and enable openssh
 
 %prep
 %setup
+%patch0 -p1
 
 %build
 for i in console-save \
