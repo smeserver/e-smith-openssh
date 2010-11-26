@@ -1,6 +1,6 @@
 diff -ruN e-smith-openssh-2.2.0.old/createlinks e-smith-openssh-2.2.0/createlinks
 --- e-smith-openssh-2.2.0.old/createlinks	2008-10-07 18:36:37.000000000 +0100
-+++ e-smith-openssh-2.2.0/createlinks	2010-11-25 21:26:33.000000000 +0000
++++ e-smith-openssh-2.2.0/createlinks	2010-11-26 20:52:29.000000000 +0000
 @@ -5,6 +5,7 @@
  
  foreach (qw(
@@ -11,37 +11,37 @@ diff -ruN e-smith-openssh-2.2.0.old/createlinks e-smith-openssh-2.2.0/createlink
      templates2events("$_", qw(
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/10Host e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/10Host
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/10Host	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/10Host	2010-11-25 21:19:03.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/10Host	2010-11-26 20:52:29.000000000 +0000
 @@ -0,0 +1 @@
 +Host *
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/10Port e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/10Port
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/10Port	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/10Port	2010-11-25 21:02:51.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/10Port	2010-11-26 20:52:29.000000000 +0000
 @@ -0,0 +1 @@
 +Port 22
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/20Protocol e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/20Protocol
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/20Protocol	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/20Protocol	2010-11-25 21:04:05.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/20Protocol	2010-11-26 20:52:29.000000000 +0000
 @@ -0,0 +1 @@
 +Protocol 2
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/30Cipher e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/30Cipher
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/30Cipher	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/30Cipher	2010-11-25 21:21:38.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/30Cipher	2010-11-26 20:52:29.000000000 +0000
 @@ -0,0 +1 @@
 +Cipher blowfish
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/30Ciphers e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/30Ciphers
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/30Ciphers	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/30Ciphers	2010-11-25 21:21:53.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/30Ciphers	2010-11-26 20:52:29.000000000 +0000
 @@ -0,0 +1 @@
 +Ciphers arcfour256,blowfish-cbc,aes256-cbc,aes192-cbc,aes128-cbc,3des-cbc,cast128-cbc,arcfour
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/50GSSAPIAuthentication e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/50GSSAPIAuthentication
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/50GSSAPIAuthentication	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/50GSSAPIAuthentication	2010-11-25 21:22:02.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/50GSSAPIAuthentication	2010-11-26 20:52:29.000000000 +0000
 @@ -0,0 +1 @@
 +GSSAPIAuthentication yes
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/50X11Forwarding e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/50X11Forwarding
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/50X11Forwarding	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/50X11Forwarding	2010-11-25 21:19:53.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/50X11Forwarding	2010-11-26 20:52:29.000000000 +0000
 @@ -0,0 +1,5 @@
 +#ForwardX11 no
 +# If this option is set to yes then remote X11 clients will have full access
@@ -50,7 +50,7 @@ diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_confi
 +ForwardX11Trusted yes
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/60Locale e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/60Locale
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_config/60Locale	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/60Locale	2010-11-25 21:20:24.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates/etc/ssh/ssh_config/60Locale	2010-11-26 20:52:29.000000000 +0000
 @@ -0,0 +1,5 @@
 +# Send locale-related environment variables
 +SendEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES 
@@ -59,6 +59,6 @@ diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates/etc/ssh/ssh_confi
 +	
 diff -ruN e-smith-openssh-2.2.0.old/root/etc/e-smith/templates.metadata/etc/ssh/ssh_config e-smith-openssh-2.2.0/root/etc/e-smith/templates.metadata/etc/ssh/ssh_config
 --- e-smith-openssh-2.2.0.old/root/etc/e-smith/templates.metadata/etc/ssh/ssh_config	1970-01-01 01:00:00.000000000 +0100
-+++ e-smith-openssh-2.2.0/root/etc/e-smith/templates.metadata/etc/ssh/ssh_config	2006-03-14 17:15:45.000000000 +0000
++++ e-smith-openssh-2.2.0/root/etc/e-smith/templates.metadata/etc/ssh/ssh_config	2010-11-26 20:52:44.000000000 +0000
 @@ -0,0 +1 @@
-+PERMS=0600
++PERMS=0644

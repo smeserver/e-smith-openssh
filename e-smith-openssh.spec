@@ -1,10 +1,10 @@
-# $Id: e-smith-openssh.spec,v 1.4 2010/11/25 22:31:04 wellsi Exp $
+# $Id: e-smith-openssh.spec,v 1.5 2010/11/26 20:56:38 wellsi Exp $
 
 Summary: e-smith module to configure and enable ssh
 %define name e-smith-openssh
 Name: %{name}
 %define version 2.2.0
-%define release 3
+%define release 4
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -24,6 +24,9 @@ Requires: runit
 AutoReqProv: no
 
 %changelog
+* Fri Nov 26 2010 Ian Wells <esmith@wellsi.com> 2.2.0-4.sme
+- Change permissions of ssh_config file to 644 [SME: 43]
+
 * Thu Nov 25 2010 Ian Wells <esmith@wellsi.com> 2.2.0-3.sme
 - Template ssh_config with improved defaults [SME: 43]
 
